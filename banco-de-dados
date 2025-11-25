@@ -1,0 +1,194 @@
+**Schema (MySQL v8)**
+
+    CREATE TABLE adotante (
+      id_adotante INT AUTO_INCREMENT PRIMARY KEY,
+      nome VARCHAR(150) NOT NULL,
+      telefone VARCHAR(20),
+      email VARCHAR(150),
+      endereco VARCHAR(255)
+    );
+    
+    CREATE TABLE gato (
+      id_gato INT AUTO_INCREMENT PRIMARY KEY,
+      nome VARCHAR(100) NOT NULL,
+      idade INT,
+      sexo CHAR(1),
+      cor VARCHAR(50),
+      status_adocao VARCHAR(50)
+    );
+    
+    CREATE TABLE adocao (
+      id_adocao INT AUTO_INCREMENT PRIMARY KEY,
+      data_adocao DATE,
+      id_gato INT,
+      id_adotante INT,
+      observacoes TEXT,
+      CONSTRAINT fk_adocao_gato FOREIGN KEY (id_gato) REFERENCES gato(id_gato),
+      CONSTRAINT fk_adocao_adotante FOREIGN KEY (id_adotante) REFERENCES adotante(id_adotante)
+    );
+
+---
+
+**Query #1**
+
+    -- INSERTS
+    INSERT INTO adotante (nome, telefone, email, endereco)
+    VALUES
+    ('Leon Baltazar', '21992220000', 'LeonBaltazar@gmail.com', 'Estrada santa rita, 763'),
+    ('Alice Chaves', '21989347777', 'AliceChaves@gmail.com', 'Av. principal, 212'),
+    ('Melissa Leal', '219182821865', 'Melissaleal@gmail.com', 'Rua das pedras vidal, 828');
+
+There are no results to be displayed.
+
+---
+**Query #2**
+
+    
+    
+    INSERT INTO gato (nome, idade, sexo, cor, status_adocao)
+    VALUES
+    ('Floquinho', 2, 'M', 'Branco', 'Disponível'),
+    ('Lua', 1, 'F', 'Tricolor', 'Disponível'),
+    ('Stive', 3, 'M', 'Cinza', 'Adotado');
+
+There are no results to be displayed.
+
+---
+**Query #3**
+
+    
+    
+    INSERT INTO adocao (data_adocao, id_gato, id_adotante, observacoes)
+    VALUES
+    ('2024-08-10', 3, 1, 'Adaptação ocorreu bem.'),
+    ('2024-09-05', 1, 2, 'Gato muito dócil.');
+
+There are no results to be displayed.
+
+---
+**Query #4**
+
+    
+    
+    
+    SELECT * FROM gato WHERE status_adocao = 'Disponível' ORDER BY nome;
+
+| id_gato | nome      | idade | sexo | cor      | status_adocao |
+| ------- | --------- | ----- | ---- | -------- | ------------- |
+| 1       | Floquinho | 2     | M    | Branco   | Disponível    |
+| 2       | Lua       | 1     | F    | Tricolor | Disponível    |
+
+---
+**Query #5**
+
+    
+    
+    
+    SELECT nome, email FROM adotante WHERE email LIKE '%gmail.com';
+
+| nome          | email                  |
+| ------------- | ---------------------- |
+| Leon Baltazar | LeonBaltazar@gmail.com |
+| Alice Chaves  | AliceChaves@gmail.com  |
+| Melissa Leal  | Melissaleal@gmail.com  |
+
+---
+**Query #6**
+
+    
+    
+    
+    SELECT a.id_adocao, g.nome AS gato, ad.nome AS adotante, a.data_adocao
+    FROM adocao a
+    JOIN gato g ON a.id_gato = g.id_gato
+    JOIN adotante ad ON a.id_adotante = ad.id_adotante
+    ORDER BY a.data_adocao DESC;
+
+| id_adocao | gato      | adotante      | data_adocao |
+| --------- | --------- | ------------- | ----------- |
+| 2         | Floquinho | Alice Chaves  | 2024-09-05  |
+| 1         | Stive     | Leon Baltazar | 2024-08-10  |
+
+---
+**Query #7**
+
+    
+    
+    
+    SELECT nome, cor, idade FROM gato LIMIT 3;
+
+| nome      | cor      | idade |
+| --------- | -------- | ----- |
+| Floquinho | Branco   | 2     |
+| Lua       | Tricolor | 1     |
+| Stive     | Cinza    | 3     |
+
+---
+**Query #8**
+
+    
+    
+    
+    SELECT nome, idade FROM gato ORDER BY idade DESC;
+
+| nome      | idade |
+| --------- | ----- |
+| Stive     | 3     |
+| Floquinho | 2     |
+| Lua       | 1     |
+
+---
+**Query #9**
+
+    
+    
+    
+    UPDATE gato SET status_adocao = 'Adotado' WHERE id_gato = 1;
+
+There are no results to be displayed.
+
+---
+**Query #10**
+
+    
+    UPDATE adotante SET telefone = '11955554444' WHERE id_adotante = 2;
+
+There are no results to be displayed.
+
+---
+**Query #11**
+
+    
+    UPDATE adocao SET observacoes = 'Adoção concluída com acompanhamento.' WHERE id_adocao = 1;
+
+There are no results to be displayed.
+
+---
+**Query #12**
+
+    
+    
+    
+    DELETE FROM adocao WHERE id_adocao = 2;
+
+There are no results to be displayed.
+
+---
+**Query #13**
+
+    
+    DELETE FROM gato WHERE id_gato = 2;
+
+There are no results to be displayed.
+
+---
+**Query #14**
+
+    
+    DELETE FROM adotante WHERE id_adotante = 3;
+
+There are no results to be displayed.
+
+---
+
+[View on DB Fiddle](https://www.db-fiddle.com/)
